@@ -14,7 +14,7 @@ Overall, this app is a useful tool for anyone interested in exploring the world 
 
 Frontend located in: https://wineme.onrender.com/
 
-Backend API located in: https://wineme-api.onrender.com/
+Backend API located in: https://wineme-api.vercel.app/api/wines
 
 Github frontend Repository: https://github.com/tomyferra/wineme
 
@@ -41,11 +41,11 @@ The wine rating will be updated on the page and in the database.
 ## Contributing
 If you would like to contribute to this project, feel free to fork the repository and submit a pull request. You can also report any bugs or issues in my personal email: ferra.tomy@gmail.com
 
-If you want to add new wines into the page, feel free to drop me an email and i'll add them. This funcionality is planned for the future. 
-# 
+If you want to add new wines into the page, feel free to drop me an email and i'll add them. This funcionality is planned for the future.
+#
 ## Contact details
 * Mail: ferra.tomy@gmail.com
 * Phone: +54 9 (11) 69002457
-* Portfolio: https://tomyferra.github.io/Portfolio/
+* Portfolio: https://tomasferrari.onrender.com
 * Github: https://github.com/tomyferra
 
