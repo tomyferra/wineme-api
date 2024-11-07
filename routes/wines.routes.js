@@ -21,7 +21,7 @@ router.get('/:id', async (req,res) => {
 
 //Add new wines to the database
 router.post('/', async (req,res) => {
-  console.log(req.body); 
+  console.log(req.body);
   const { Name, Winery, Variety, Year, Totalqualifications, Avgqualifications,Score, Marinates, Image, Region, Description} = req.body;
   const wine = new Wine({ Name, Winery, Variety, Year, Totalqualifications, Avgqualifications, Score, Marinates, Image, Region, Description});
   await wine.save();
