@@ -1,10 +1,10 @@
 const express = require('express');
 const router = express.Router();
-
+const { authenticateToken } = require('../middlewares');
 const Wine = require('../models/wine');
 
 // Api home page
-router.get('/', async (req,res) => {
+router.get('/', authenticateToken, async (req,res) => {
   res.setHeader('Access-Control-Allow-Origin', '*')
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE,OPTIONS');
 

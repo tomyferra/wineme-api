@@ -4,6 +4,8 @@ const morgan  = require('morgan');
 const path = require('path');
 const {mongoose} = require('./database')
 const app = express();
+require('dotenv').config(); // Cargar variables de entorno
+
 
 //settings
 app.set('port', process.env.PORT || 5001);
@@ -22,6 +24,7 @@ app.use(function (req, res, next) {
 
 //Routes
 app.use('/api/wines',require('./routes/wines.routes'));
+app.use('/user',require('./routes/login.routes'));
 
 //Static Files
 app.use(express.static(path.join(__dirname, 'public')))
