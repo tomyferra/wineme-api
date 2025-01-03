@@ -5,6 +5,7 @@ const path = require('path');
 const {mongoose} = require('./database')
 const app = express();
 require('dotenv').config(); // Cargar variables de entorno
+const cors = require("cors");
 
 
 //settings
@@ -13,6 +14,7 @@ app.set('port', process.env.PORT || 5001);
 //Middlewares
 app.use(morgan('dev'));
 app.use(express.json());
+app.use(cors());
 
 // Enable CORS
 app.use(function (req, res, next) {
