@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const { authenticateToken } = require('../middlewares');
 const Wine = require('../models/wine');
+const mongoose = require("mongoose");
 
 // Api home page
 router.get('/', authenticateToken, async (req,res) => {
@@ -43,33 +44,54 @@ router.delete('/:id', async (req,res)=>{
 });
 
 // Endpoint para ejecutar el script de Python
-router.post("/recommend/:id", async(req, res) => {
-  const id = await Wine.findById(req.params.id);
-  console.log("id from params: ", id)
-  if (!id) {
-      return res.status(400).json({ error: "El ID es requerido" });
+router.post("/recommend/:name", async(req, res) => {
+  try {
+    const name = req.params.name.trim(); // Eliminar espacios extra
+
+    console.log("Buscando vino con nombre:", name);
+
+    const wine = await Wine.findOne({ Name: name });
+
+    if (!wine) {
+      return res.status(404).json({ message: "Vino no encontrado" });
+    }
+    res.json(wine);
+  } catch (err) {
+    console.error("Error en la consulta:", err);
+    res.status(500).json({ message: "Error en el servidor" });
   }
+  //console.log("IDs en la base de datos:", wines.map(w => w._id.toString()));
+  //const winefiltered = await Wine.findById(req.params.id );
+  //console.log("winefiltered: ", winefiltered)
+  // const wines = await Wine.find();
+  //res.json(winefiltered);
+  // res.json({"id": req.params.id});
+  // const winefiltered = await Wine.findById(req.params.id);
+  // res.json({"id": winefiltered});
 
-  const pythonProcess = spawn("python3", ["Recommend.py", id]);
+  // if (!id) {
+  //     return res.status(400).json({ error: "El ID es requerido" });
+  // }
 
-  let result = "";
-  pythonProcess.stdout.on("data", (data) => {
-      result += data.toString();
-  });
-  console.log("result: ", result)
-  pythonProcess.stderr.on("data", (data) => {
-      console.error(`Error: ${data}`);
-  });
+  // const pythonProcess = spawn("python3", ["Recommend.py", id]);
 
-  pythonProcess.on("close", (code) => {
-      if (code === 0) {
-          res.json({ similarWines: JSON.parse(result.trim()) });
-      } else {
-          res.status(500).json({ error: `Error ejecutando el script (code ${code})` });
-      }
-  });
+  // let result = "";
+  // pythonProcess.stdout.on("data", (data) => {
+  //     result += data.toString();
+  // });
+  // console.log("result: ", result)
+  // pythonProcess.stderr.on("data", (data) => {
+  //     console.error(`Error: ${data}`);
+  // });
+
+  // pythonProcess.on("close", (code) => {
+  //     if (code === 0) {
+  //         res.json({ similarWines: JSON.parse(result.trim()) });
+  //     } else {
+  //         res.status(500).json({ error: `Error ejecutando el script (code ${code})` });
+  //     }
+  // });
 });
-
 
 
 module.exports = router;
