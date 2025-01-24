@@ -42,4 +42,34 @@ router.delete('/:id', async (req,res)=>{
   res.json({Status: 'Wine deleted'});
 });
 
+// Endpoint para ejecutar el script de Python
+router.post("/recommend/:id", async(req, res) => {
+  const id = await Wine.findById(req.params.id);
+  console.log("id from params: ", id)
+  if (!id) {
+      return res.status(400).json({ error: "El ID es requerido" });
+  }
+
+  const pythonProcess = spawn("python3", ["Recommend.py", id]);
+
+  let result = "";
+  pythonProcess.stdout.on("data", (data) => {
+      result += data.toString();
+  });
+  console.log("result: ", result)
+  pythonProcess.stderr.on("data", (data) => {
+      console.error(`Error: ${data}`);
+  });
+
+  pythonProcess.on("close", (code) => {
+      if (code === 0) {
+          res.json({ similarWines: JSON.parse(result.trim()) });
+      } else {
+          res.status(500).json({ error: `Error ejecutando el script (code ${code})` });
+      }
+  });
+});
+
+
+
 module.exports = router;
